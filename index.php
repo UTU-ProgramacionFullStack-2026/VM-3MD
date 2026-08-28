@@ -15,7 +15,7 @@ $resultado = $conn->execute_query($sql);
 </head>
 
 <body>
-    <button>Nuevo usuario</button>
+    <a href="crearUsuario.php">Nuevo usuario</a>
     <table>
         <thead>
             <tr>
