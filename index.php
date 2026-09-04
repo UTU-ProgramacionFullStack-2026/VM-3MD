@@ -15,7 +15,7 @@ $resultado = $conn->execute_query($sql);
 </head>
 
 <body>
-    <a href="crearUsuario.php">Nuevo usuario</a>
+    <a href="crearEditarUsuario.php">Nuevo usuario</a>
     <table>
         <thead>
             <tr>
@@ -32,7 +32,7 @@ $resultado = $conn->execute_query($sql);
                     <td><?= $fila['nombre']; ?></td>
                     <td><?= $fila['email']; ?></td>
                     <td><?= $fila['rol']; ?></td>
-                    <td><a href="#">Editar</a> <a href="#">Borrar</a></td>
+                    <td><a href="crearEditarUsuario.php?id=<?php echo $fila['usuario_id']; ?>">Editar</a> <a href="#">Borrar</a></td>
                 </tr>
 
             <?php endforeach ?>
