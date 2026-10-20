@@ -2,19 +2,31 @@
 
 class Opcion
 {
-    private $texto;
-    private $valor;
-    private $seleccionada;
+    private string $id;
+    private bool $respuesta;
+    private string $tipo = "binaria";
 
-    public function __construct(string $texto, string $valor)
+    public function __construct()
     {
-        $this->texto = $texto;
-        $this->valor = $valor;
-        $this->seleccionada = false;
+        $this->id = bin2hex(random_bytes(16));
     }
 
-    public function seleccionar()
+    public function getId(): string
     {
-        $this->seleccionada = true;
+        return $this->id;
+    }
+
+    public function setRespuesta(string $respuesta)
+    {
+        if ($respuesta == "SI") {
+            $this->respuesta = true;
+        } else {
+            $this->respuesta = false;
+        }
+    }
+
+    public function getRespuesta()
+    {
+        return $this->respuesta;
     }
 }

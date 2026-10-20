@@ -18,7 +18,7 @@ class Encuesta
 
     public function crearPregunta()
     {
-        $pregunta = new Pregunta("titulo pregunta", "texto pregunnta");
+        $pregunta = new Pregunta("titulo pregunta", "texto pregunta");
         array_push($this->listaPreguntas, $pregunta);
     }
 
