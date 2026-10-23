@@ -2,11 +2,12 @@
 
 class Encuesta
 {
-    private $titulo;
-    private $descripcion;
-    private $estado;
-    private $categoria;
+    private string $titulo;
+    private string $descripcion;
+    private string $estado;
+    private string $categoria;
     private $listaPreguntas = array();
+    private string $id;
 
     public function __construct(string $titulo, string $descripcion, string $categoria)
     {
@@ -14,6 +15,12 @@ class Encuesta
         $this->descripcion = $descripcion;
         $this->categoria = $categoria;
         $this->estado = "borrador";
+        $this->id = bin2hex(random_bytes(16));
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function crearPregunta()
@@ -40,5 +47,15 @@ class Encuesta
     public function getListaPreguntas()
     {
         return $this->listaPreguntas;
+    }
+
+    public function getPregunta(string $id): ?Pregunta
+    {
+        foreach ($this->listaPreguntas as $pregunta) {
+            if ($pregunta->id == $id) {
+                return $pregunta;
+            }
+        }
+        return null;
     }
 }

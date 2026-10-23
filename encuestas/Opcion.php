@@ -18,7 +18,7 @@ class Opcion
 
     public function setRespuesta(string $respuesta)
     {
-        if ($respuesta == "SI") {
+        if ($respuesta == "si") {
             $this->respuesta = true;
         } else {
             $this->respuesta = false;
