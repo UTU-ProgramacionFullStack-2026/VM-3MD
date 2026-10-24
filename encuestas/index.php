@@ -1,35 +1,35 @@
 <?php
 
-require_once("db_encuestas.php");
+require_once("conexion.php");
+require_once("SistemaEncuestas.php");
 
-$sqlEncuestas = "SELECT * FROM encuesta;";
-
-$resultado = $conn->execute_query($sqlEncuestas);
-
-$datosEncuestas = $resultado->fetch_all(MYSQLI_ASSOC);
+$sistema = new SistemaEncuestas($conexion);
+$sistema->cargarEncuestas();
 
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encuestas del hospital</title>
 </head>
 
 <body>
-    <p>Sírvase responder la encuesta que le corresponde y ninguna otra por favor.</p>
+    <h1>Encuestas del hospital</h1>
+
     <ul>
-        <?php foreach ($datosEncuestas as $encuesta): ?>
-            <li><?= $encuesta['texto'] ?></li>
+        <?php foreach ($sistema->getEncuestas() as $encuesta): ?>
+            <li>
+                <?= $encuesta->getTitulo() ?>
+                - <a href="responder.php?id=<?= $encuesta->getId() ?>">Responder</a>
+                - <a href="resultados.php?id=<?= $encuesta->getId() ?>">Resultados</a>
+            </li>
         <?php endforeach; ?>
     </ul>
 
-    <p>
-        <a href="crear.php">Crear encuesta</a>
-    </p>
+    <p><a href="crear.php">Nueva encuesta</a></p>
 </body>
 
 </html>

@@ -2,28 +2,20 @@
 
 class Pregunta
 {
-    private string $pregunta;
-    private string $texto;
-    private string $obligatoria;
-    private string $tipo;
-    private Opcion $opcion;
-    private string $id;
+    private $id;
+    private $texto;
+    private $respuesta;
 
-    public function __construct(string $pregunta, string $texto)
+    public function __construct($id, $texto, $respuesta)
     {
-        $this->pregunta = $pregunta;
+        $this->id = $id;
         $this->texto = $texto;
-        $this->id = bin2hex(random_bytes(16));
+        $this->respuesta = $respuesta;
     }
 
-    public function getId(): string
+    public function getId()
     {
         return $this->id;
-    }
-
-    public function getPregunta()
-    {
-        return $this->pregunta;
     }
 
     public function getTexto()
@@ -31,13 +23,14 @@ class Pregunta
         return $this->texto;
     }
 
-    public function setOpcion(Opcion $opcion)
+    public function getRespuesta()
     {
-        $this->opcion = $opcion;
+        return $this->respuesta;
     }
 
-    public function getOpcion()
+    // El tipo de la pregunta lo sabe su respuesta
+    public function getTipo()
     {
-        return $this->opcion;
+        return $this->respuesta->getTipo();
     }
 }

@@ -2,60 +2,40 @@
 
 class Encuesta
 {
-    private string $titulo;
-    private string $descripcion;
-    private string $estado;
-    private string $categoria;
-    private $listaPreguntas = array();
-    private string $id;
+    private $id;
+    private $titulo;
+    private $descripcion;
+    private $preguntas = [];
 
-    public function __construct(string $titulo, string $descripcion, string $categoria)
+    public function __construct($id, $titulo, $descripcion)
     {
+        $this->id = $id;
         $this->titulo = $titulo;
         $this->descripcion = $descripcion;
-        $this->categoria = $categoria;
-        $this->estado = "borrador";
-        $this->id = bin2hex(random_bytes(16));
     }
 
-    public function getId(): string
+    public function getId()
     {
         return $this->id;
     }
 
-    public function crearPregunta()
+    public function getTitulo()
     {
-        $pregunta = new Pregunta("titulo pregunta", "texto pregunta");
-        array_push($this->listaPreguntas, $pregunta);
+        return $this->titulo;
     }
 
-    public function getTituloYDescripcion()
+    public function getDescripcion()
     {
-        return $this->titulo . " Desc: " . $this->descripcion . " Cat: " . $this->categoria;
+        return $this->descripcion;
     }
 
-    public function setTitulo(string $nuevoTitulo)
+    public function agregarPregunta($pregunta)
     {
-        $this->titulo = $nuevoTitulo;
+        $this->preguntas[] = $pregunta;
     }
 
-    public function agregarPregunta(Pregunta $pregunta)
+    public function getPreguntas()
     {
-        array_push($this->listaPreguntas, $pregunta);
-    }
-
-    public function getListaPreguntas()
-    {
-        return $this->listaPreguntas;
-    }
-
-    public function getPregunta(string $id): ?Pregunta
-    {
-        foreach ($this->listaPreguntas as $pregunta) {
-            if ($pregunta->id == $id) {
-                return $pregunta;
-            }
-        }
-        return null;
+        return $this->preguntas;
     }
 }

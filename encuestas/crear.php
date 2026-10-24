@@ -1,58 +1,64 @@
 <?php
-require_once('./db_encuestas.php');
 
+require_once("conexion.php");
+require_once("SistemaEncuestas.php");
 
-if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+$sistema = new SistemaEncuestas($conexion);
 
-    if (!empty($_POST['titulo-encuesta']) && !empty($_POST['descripcion'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Primero armamos los objetos con lo que llegó del formulario...
+    $encuesta = new Encuesta(null, $_POST['titulo'], $_POST['descripcion']);
 
-        $titulo = $_POST['titulo-encuesta'];
-        $descripcion = $_POST['descripcion'];
-
-
-        // La tabla encuesta no tiene columna categoria, por eso no se guarda
-        $sqlInsert = "INSERT INTO encuesta (titulo, texto)
-        VALUES (?, ?)";
-
-        $conn->execute_query($sqlInsert, [$titulo, $descripcion]);
-
-        header("Location: index.php");
-        exit;
+    foreach ($_POST['preguntas'] as $datosPregunta) {
+        $respuesta = $sistema->crearRespuesta($datosPregunta['tipo']);
+        $pregunta = new Pregunta(null, $datosPregunta['texto'], $respuesta);
+        $encuesta->agregarPregunta($pregunta);
     }
+
+    // ...y después el sistema los guarda en la base
+    $sistema->guardarEncuesta($encuesta);
+
+    header("Location: index.php");
+    exit;
 }
+
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear encuesta</title>
+    <title>Nueva encuesta</title>
 </head>
 
 <body>
-
+    <h1>Nueva encuesta</h1>
 
     <form method="POST">
+        <p>
+            <label>Título</label><br>
+            <input type="text" name="titulo" required>
+        </p>
 
-        <div>
-            <label for="titulo-encuesta">Título</label>
-            <input type="text" id="titulo-encuesta" name="titulo-encuesta" required>
-        </div>
+        <p>
+            <label>Descripción</label><br>
+            <textarea name="descripcion"></textarea>
+        </p>
 
-        <div>
-            <label for="descripcion">Descripción</label>
-            <input type="text" id="descripcion" name="descripcion" required>
-        </div>
+        <!-- Acá el JavaScript va agregando las preguntas -->
+        <div id="preguntas"></div>
 
+        <p>
+            <button type="button" onclick="agregarPregunta()">Nueva pregunta</button>
+        </p>
 
-
-        <a href="crearPregunta.php">Crear pregunta</a>
-
-        <input type="submit" value="Enviar">
+        <input type="submit" value="Guardar encuesta">
     </form>
 
+    <p><a href="index.php">Volver</a></p>
+
+    <script src="crear.js"></script>
 </body>
 
 </html>
